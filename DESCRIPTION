@@ -1,15 +1,15 @@
 Package: battleRealms
-Title: What the Package Does (One Line, Title Case)
+Title: Explore Battle Realms Data
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Recle",
+           family = "Vibal",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+           email = "recleevibal@gmail.com",
+           comment = c(ORCID = "0000-0002-4556-6812"))
+Description: A package that explores the underlying mechanics and system in the 
+    game Battle Realms Zen Edition.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
