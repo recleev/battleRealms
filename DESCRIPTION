@@ -7,12 +7,17 @@ Authors@R:
            role = c("aut", "cre"),
            email = "recleevibal@gmail.com",
            comment = c(ORCID = "0000-0002-4556-6812"))
-Description: A package that explores the underlying mechanics and system in the 
-    game Battle Realms Zen Edition.
+Description: A package that explores the underlying
+    mechanics and system in the game Battle Realms Zen Edition.
 License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Depends: 
-    R (>= 2.10)

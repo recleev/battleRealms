@@ -1,0 +1,25 @@
+---
+title: "unit-strengths-weaknesses"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{unit-strengths-weaknesses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+Buying [Battle Realms Zen Edition from Steam](https://store.steampowered.com/app/1025600/Battle_Realms_Zen_Edition/) is one of the best buys for a game I have ever made. I still remember the few times I spent with the game in computer shops when I was in high school. I only played a few games, and I struggled to play, much more win, against the AI. I wished I could have played Battle Realms more. With the release of the game is steam, I never thought I would be able to have another chance to at least beat the AIs in the game. 
+
+I am not that big of a fan of real time strategy games because I am not very good at micro-management.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(battleRealms)
+```
