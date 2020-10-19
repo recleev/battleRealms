@@ -13,6 +13,7 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Suggests: 
+    data.table,
     knitr,
     rmarkdown
 VignetteBuilder: 

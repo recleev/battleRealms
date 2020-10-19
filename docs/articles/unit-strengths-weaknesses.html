@@ -87,8 +87,69 @@
 <a href="#introduction" class="anchor"></a>Introduction</h1>
 <p>Buying <a href="https://store.steampowered.com/app/1025600/Battle_Realms_Zen_Edition/">Battle Realms Zen Edition from Steam</a> is one of the best buys for a game I have ever made. I still remember the few times I spent with the game in computer shops when I was in high school. I only played a few games, and I struggled to play, much more win, against the AI. I wished I could have played Battle Realms more. With the release of the game is steam, I never thought I would be able to have another chance to at least beat the AIs in the game.</p>
 <p>I am not that big of a fan of real time strategy games because I am not very good at micro-management.</p>
+</div>
+<div id="keep-needed-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#keep-needed-data" class="anchor"></a>Keep Needed Data</h1>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">battleRealms</span><span class="op">)</span></pre></div>
+
+<span class="va">units</span> <span class="op">&lt;-</span> <span class="va">br_units</span><span class="op">[</span>
+  ,
+  <span class="fu">.</span><span class="op">(</span>
+    <span class="va">Name</span>,
+    <span class="va">UnitClass</span>,
+    <span class="va">RiceTrainCost</span>,
+    <span class="va">WaterTrainCost</span>,
+    <span class="va">YinYangTrainCost</span>,
+    <span class="va">MaxHealth</span>,
+    <span class="va">HealthRecoveryRate</span>,
+    <span class="va">MaxHealthRecovery</span>,
+    <span class="va">MaxFatigue</span>,
+    <span class="va">FatigueRecovery</span>,
+    <span class="va">MeleeWeapon</span>,
+    <span class="va">MissileWeapon</span>,
+    <span class="va">MissileWeaponLaunchHeight</span>,
+    <span class="va">PrefersMelee</span>,
+    <span class="va">AMBlunt</span>, 
+    <span class="va">AMCutting</span>, 
+    <span class="va">AMExplosive</span>,
+    <span class="va">AMFire</span>,
+    <span class="va">AMMagical</span>,
+    <span class="va">AMPiercing</span>,
+    <span class="va">MaxUnitsAttacking</span>,
+    <span class="va">DeathYinYangAwarded</span>,
+    <span class="va">StaminaWhenRunning</span>,
+    <span class="va">Bracing</span>,
+    <span class="va">ImmuneToCharge</span>,
+    <span class="va">InnateAbility</span>,
+    <span class="va">BattleGear1</span>,
+    <span class="va">BattleGear2</span>,
+    <span class="va">BattleGear3</span>
+  <span class="op">)</span>
+<span class="op">]</span>
+
+<span class="va">weapons</span> <span class="op">&lt;-</span> <span class="va">br_weapons</span><span class="op">[</span>
+  ,
+  <span class="fu">.</span><span class="op">(</span>
+    <span class="va">Type</span>,
+    <span class="va">BaseDamage</span>,
+    <span class="va">MinRange</span>,
+    <span class="va">MaxRange</span>,
+    <span class="va">MaxMountedRange</span>,
+    <span class="va">WatchtowerMinRange</span>,
+    <span class="va">WatchtowerMaxRange</span>,
+    <span class="va">Class</span>,
+    <span class="va">DamageClass</span>,
+    <span class="va">OpportunityFire</span>,
+    <span class="va">AreaOfEffect</span>,
+    <span class="va">Poison</span>,
+    <span class="va">PoisonTime</span>,
+    <span class="va">IsFireWeapon</span>,
+    <span class="va">FirePointDamage</span>,
+    <span class="va">YinPerHit</span>,
+    <span class="va">YangPerHit</span>
+  <span class="op">)</span>
+<span class="op">]</span></pre></div>
 </div>
   </div>
 
