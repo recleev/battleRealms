@@ -24,10 +24,16 @@ knitr::opts_chunk$set(
 
 library(battleRealms)
 library(data.table)
+library(cdata)
+library(ggplot2)
+library(magrittr)
+library(forcats)
 
 ```
 
-# Keep Needed Data
+# Data Preparation
+
+## Select Variables
 
 ```{r select-data-and-columns}
 
@@ -91,3 +97,52 @@ weapons <- br_weapons[
 
 ```
 
+## Transform Data
+
+```{r convert-weapons-to-blocks}
+
+units <- pivot_to_blocks(
+  units,
+  nameForNewKeyColumn = "WeaponType",
+  nameForNewValueColumn = "WeaponID",
+  columnsToTakeFrom = c("MeleeWeapon", "MissileWeapon")
+)
+
+setDT(units)
+
+```
+
+## Combine Unit and Weapons Data
+
+```{r merge-units-weapon}
+
+units_weapons <- units[
+  weapons,
+  on = c("WeaponID" = "Type"),
+  nomatch = 0,
+  allow.cartesian = TRUE
+]
+
+```
+
+# Visualize Data
+
+## Melee Damage
+
+```{r stongest-melee}
+
+units_weapons[PrefersMelee == 1][order(BaseDamage, decreasing = TRUE)][1:10] %>%
+  ggplot(aes(fct_reorder(Name, -BaseDamage), BaseDamage)) + 
+  geom_col()
+
+```
+
+## Missile Damage
+
+```{r stongest-melee}
+
+units_weapons[PrefersMelee == 0][order(BaseDamage, decreasing = TRUE)][1:10] %>%
+  ggplot(aes(fct_reorder(Name, -BaseDamage), BaseDamage)) + 
+  geom_col()
+
+```
