@@ -19,6 +19,15 @@ br_battle_gears <- fread(
   drop = c(1, 11)
 )
 
+br_buildings_path <-
+  here("data-raw", "BattleRealmsData", "Data_Buildings.txt")
+
+br_buildings <- fread(
+  br_buildings_path,
+  # Remove first and last columns because these are empty
+  drop = c(1, 107)
+)
+
 br_techniques_path <-
   here("data-raw", "BattleRealmsData", "Data_Techniques.txt")
 
@@ -37,6 +46,15 @@ br_units <- fread(
   drop = c(1, 106)
 )
 
+br_upgrades_path <-
+  here("data-raw", "BattleRealmsData", "Data_Upgrades.txt")
+
+br_upgrades <- fread(
+  br_upgrades_path,
+  # Remove first and last columns because these are empty
+  drop = c(1, 17)
+)
+
 br_weapons_path <-
   here("data-raw", "BattleRealmsData", "Data_Weapons.txt")
 
@@ -49,6 +67,7 @@ br_weapons <- fread(
 usethis::use_data(
   br_abilities,
   br_battle_gears,
+  br_buildings,
   br_techniques,
   br_units,
   br_weapons,

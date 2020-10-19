@@ -13,13 +13,81 @@ Buying [Battle Realms Zen Edition from Steam](https://store.steampowered.com/app
 
 I am not that big of a fan of real time strategy games because I am not very good at micro-management.
 
-```{r, include = FALSE}
+```{r set-options-attach-packages, include = FALSE, warning=FALSE, message=FALSE}
+
 knitr::opts_chunk$set(
   collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
   comment = "#>"
 )
+
+library(battleRealms)
+library(data.table)
+
 ```
 
-```{r setup}
-library(battleRealms)
+# Keep Needed Data
+
+```{r select-data-and-columns}
+
+units <- br_units[
+  ,
+  .(
+    Name,
+    UnitClass,
+    RiceTrainCost,
+    WaterTrainCost,
+    YinYangTrainCost,
+    MaxHealth,
+    HealthRecoveryRate,
+    MaxHealthRecovery,
+    MaxFatigue,
+    FatigueRecovery,
+    MeleeWeapon,
+    MissileWeapon,
+    MissileWeaponLaunchHeight,
+    PrefersMelee,
+    AMBlunt, 
+    AMCutting, 
+    AMExplosive,
+    AMFire,
+    AMMagical,
+    AMPiercing,
+    MaxUnitsAttacking,
+    DeathYinYangAwarded,
+    StaminaWhenRunning,
+    Bracing,
+    ImmuneToCharge,
+    InnateAbility,
+    BattleGear1,
+    BattleGear2,
+    BattleGear3
+  )
+]
+
+weapons <- br_weapons[
+  ,
+  .(
+    Type,
+    BaseDamage,
+    MinRange,
+    MaxRange,
+    MaxMountedRange,
+    WatchtowerMinRange,
+    WatchtowerMaxRange,
+    Class,
+    DamageClass,
+    OpportunityFire,
+    AreaOfEffect,
+    Poison,
+    PoisonTime,
+    IsFireWeapon,
+    FirePointDamage,
+    YinPerHit,
+    YangPerHit
+  )
+]
+
 ```
+
