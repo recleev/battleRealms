@@ -1,8 +1,8 @@
 ---
-title: "unit-strengths-weaknesses"
+title: "Unit Strengths, Weaknesses, and Basic Stats"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{unit-strengths-weaknesses}
+  %\VignetteIndexEntry{Unit Strengths, Weaknesses, and Basic Stats}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -40,6 +40,7 @@ library(forcats)
 units <- br_units[
   ,
   .(
+    UnitID = Type,
     Name,
     UnitClass,
     RiceTrainCost,
@@ -95,6 +96,71 @@ weapons <- br_weapons[
   )
 ]
 
+cols_train_times <- 
+  paste0(c("UnitTrainingTime", "UnitIn", "UnitOut"), rep(1:6, each = 3))
+
+train_time <- br_buildings[
+  ,
+  ..cols_train_times
+]
+
+train_time_ct <- data.frame(
+  UnitIndex = as.character(1:6),
+  UnitIDIn = grep("UnitIn", cols_train_times, value = TRUE),
+  UnitIDOut = grep("UnitOut", cols_train_times, value = TRUE),
+  TrainTime = grep("UnitTrainingTime", cols_train_times, value = TRUE)
+)
+
+train_time <- rowrecs_to_blocks(
+  train_time,
+  controlTable = train_time_ct
+)
+
+setDT(train_time)
+
+train_time <- train_time[, UnitIndex := NULL]
+
+train_chain1 <- train_time[
+  ,
+  .(
+    UnitID = UnitIDOut,
+    UnitChain1 = UnitIDIn,
+    TrainTime1 = TrainTime
+  )
+]
+
+train_chain2 <- train_time[
+  ,
+  .(
+    UnitChain1 = UnitIDOut,
+    UnitChain2 = UnitIDIn,
+    TrainTime2 = TrainTime
+  )
+]
+
+train_chain3 <- train_time[
+  ,
+  .(
+    UnitChain2= UnitIDOut,
+    UnitChain3 = UnitIDIn,
+    TrainTime3 = TrainTime
+  )
+]
+
+train_chain12 <- train_chain1[
+  train_chain2,
+  on = "UnitChain1", 
+  nomatch = 0,
+  allow.cartesian = TRUE
+]
+
+train_chain123 <- train_chain12[
+  train_chain3,
+  on = "UnitChain2", 
+  nomatch = 0,
+  allow.cartesian = TRUE
+]
+
 ```
 
 ## Transform Data
@@ -114,11 +180,16 @@ setDT(units)
 
 ## Combine Unit and Weapons Data
 
-```{r merge-units-weapon}
+```{r merge-units-weapon,eval=FALSE}
 
-units_weapons <- units[
+unit_stats <- units[
   weapons,
   on = c("WeaponID" = "Type"),
+  nomatch = 0,
+  allow.cartesian = TRUE
+][
+  train_time,
+  on = "UnitID",
   nomatch = 0,
   allow.cartesian = TRUE
 ]
@@ -129,7 +200,7 @@ units_weapons <- units[
 
 ## Melee Damage
 
-```{r stongest-melee}
+```{r stongest-melee, eval=FALSE}
 
 units_weapons[PrefersMelee == 1][order(BaseDamage, decreasing = TRUE)][1:10] %>%
   ggplot(aes(fct_reorder(Name, -BaseDamage), BaseDamage)) + 
@@ -139,7 +210,7 @@ units_weapons[PrefersMelee == 1][order(BaseDamage, decreasing = TRUE)][1:10] %>%
 
 ## Missile Damage
 
-```{r stongest-melee}
+```{r stongest-missile, eval=FALSE}
 
 units_weapons[PrefersMelee == 0][order(BaseDamage, decreasing = TRUE)][1:10] %>%
   ggplot(aes(fct_reorder(Name, -BaseDamage), BaseDamage)) + 

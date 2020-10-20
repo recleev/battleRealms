@@ -13,8 +13,12 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
 Suggests: 
+    cdata,
     data.table,
+    forcats,
+    ggplot2,
     knitr,
+    magrittr,
     rmarkdown
 VignetteBuilder: 
     knitr
