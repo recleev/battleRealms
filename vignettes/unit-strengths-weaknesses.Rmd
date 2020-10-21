@@ -1,6 +1,12 @@
 ---
 title: "Unit Strengths, Weaknesses, and Basic Stats"
-output: rmarkdown::html_vignette
+output:  
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 2
+    number_sections: yes
+pkgdown:
+  as_is: true
 vignette: >
   %\VignetteIndexEntry{Unit Strengths, Weaknesses, and Basic Stats}
   %\VignetteEngine{knitr::rmarkdown}
