@@ -72,7 +72,9 @@
 
       
 
-      </header><script src="unit-strengths-weaknesses_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="unit-strengths-weaknesses_files/jquery-1.11.3/jquery.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="unit-strengths-weaknesses_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<script src="unit-strengths-weaknesses_files/bootstrap-3.3.5/js/bootstrap.min.js"></script><script src="unit-strengths-weaknesses_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script><script src="unit-strengths-weaknesses_files/bootstrap-3.3.5/shim/respond.min.js"></script><script src="unit-strengths-weaknesses_files/navigation-1.1/tabsets.js"></script><script src="unit-strengths-weaknesses_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Unit Strengths, Weaknesses, and Basic Stats</h1>
@@ -87,16 +89,16 @@
     
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<a href="#introduction" class="anchor"></a><span class="header-section-number">1</span> Introduction</h1>
 <p>Buying <a href="https://store.steampowered.com/app/1025600/Battle_Realms_Zen_Edition/">Battle Realms Zen Edition from Steam</a> is one of the best buys for a game I have ever made. I still remember the few times I spent with the game in computer shops when I was in high school. I only played a few games, and I struggled to play, much more win, against the AI. I wished I could have played Battle Realms more. With the release of the game is steam, I never thought I would be able to have another chance to at least beat the AIs in the game.</p>
 <p>I am not that big of a fan of real time strategy games because I am not very good at micro-management.</p>
 </div>
 <div id="data-preparation" class="section level1">
 <h1 class="hasAnchor">
-<a href="#data-preparation" class="anchor"></a>Data Preparation</h1>
+<a href="#data-preparation" class="anchor"></a><span class="header-section-number">2</span> Data Preparation</h1>
 <div id="select-variables" class="section level2">
 <h2 class="hasAnchor">
-<a href="#select-variables" class="anchor"></a>Select Variables</h2>
+<a href="#select-variables" class="anchor"></a><span class="header-section-number">2.1</span> Select Variables</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 
 <span class="va">units</span> <span class="op">&lt;-</span> <span class="va">br_units</span><span class="op">[</span>
@@ -225,7 +227,7 @@
 </div>
 <div id="transform-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#transform-data" class="anchor"></a>Transform Data</h2>
+<a href="#transform-data" class="anchor"></a><span class="header-section-number">2.2</span> Transform Data</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 
 <span class="va">units</span> <span class="op">&lt;-</span> <span class="fu">pivot_to_blocks</span><span class="op">(</span>
@@ -239,7 +241,7 @@
 </div>
 <div id="combine-unit-and-weapons-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#combine-unit-and-weapons-data" class="anchor"></a>Combine Unit and Weapons Data</h2>
+<a href="#combine-unit-and-weapons-data" class="anchor"></a><span class="header-section-number">2.3</span> Combine Unit and Weapons Data</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 
 <span class="va">unit_stats</span> <span class="op">&lt;-</span> <span class="va">units</span><span class="op">[</span>
@@ -257,10 +259,10 @@
 </div>
 <div id="visualize-data" class="section level1">
 <h1 class="hasAnchor">
-<a href="#visualize-data" class="anchor"></a>Visualize Data</h1>
+<a href="#visualize-data" class="anchor"></a><span class="header-section-number">3</span> Visualize Data</h1>
 <div id="melee-damage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#melee-damage" class="anchor"></a>Melee Damage</h2>
+<a href="#melee-damage" class="anchor"></a><span class="header-section-number">3.1</span> Melee Damage</h2>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 
 <span class="va">units_weapons</span><span class="op">[</span><span class="va">PrefersMelee</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">BaseDamage</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">%&gt;%</span>
@@ -269,7 +271,7 @@
 </div>
 <div id="missile-damage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#missile-damage" class="anchor"></a>Missile Damage</h2>
+<a href="#missile-damage" class="anchor"></a><span class="header-section-number">3.2</span> Missile Damage</h2>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 
 <span class="va">units_weapons</span><span class="op">[</span><span class="va">PrefersMelee</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">BaseDamage</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span> <span class="op">%&gt;%</span>
