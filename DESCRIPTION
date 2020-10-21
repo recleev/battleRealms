@@ -15,8 +15,7 @@ Depends:
 Suggests: 
     cdata,
     data.table,
-    forcats,
-    ggplot2,
+    DT,
     knitr,
     magrittr,
     rmarkdown

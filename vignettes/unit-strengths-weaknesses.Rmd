@@ -15,11 +15,15 @@ vignette: >
 
 # Introduction
 
-Buying [Battle Realms Zen Edition from Steam](https://store.steampowered.com/app/1025600/Battle_Realms_Zen_Edition/) is one of the best buys for a game I have ever made. I still remember the few times I spent with the game in computer shops when I was in high school. I only played a few games, and I struggled to play, much more win, against the AI. I wished I could have played Battle Realms more. With the release of the game is steam, I never thought I would be able to have another chance to at least beat the AIs in the game. 
+Buying [Battle Realms Zen Edition from Steam](https://store.steampowered.com/app/1025600/Battle_Realms_Zen_Edition/) is one of the best game buys I have ever made. I still remember the few times I spent with the game in computer shops when I was in high school. I only played a few games, and I struggled to play, much more win, against the AI. I wish I could have played Battle Realms more back then. 
 
-I am not that big of a fan of real time strategy games because I am not very good at micro-management.
+With the release of the game is steam, I never thought I would be able to have another chance to at least beat the AIs in the game. I am not that big of a fan of real time strategy games because I am not very good at micro-management, but Battle Realms has a certain appeal that makes want to be better at it.
 
-```{r set-options-attach-packages, include = FALSE, warning=FALSE, message=FALSE}
+Since I am a returning noob to the game, I still am not very familiar to the different strengths and weaknesses of each unit. I know experience will let acquaint me with all the units, but that will take months, if not years, of playing and practice. Lucky for me, I know [R](https://www.r-project.org/) and the Battle Realms data is accessible with the [Battle Realms Data Editor](https://forums.gamingterritory.com/topic/28424-battle-realms-data-editor-by-situvn/). I took my knowledge and R and my love for Battle Realms to create this fun package. 
+
+While there is an official Battle Realms [unit chart](https://battlerealms.github.io/chart/), I think the information in it is incomplete especially for a noob and data lover like. Here is my attempt to provide enthusiasts with a way to review unit strengths and weaknesses. For non-useRs, you can go straight to the [table](#data-showcase).
+
+```{r set-options-attach-packages, include = TRUE, warning=FALSE, message=FALSE}
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -31,9 +35,29 @@ knitr::opts_chunk$set(
 library(battleRealms)
 library(data.table)
 library(cdata)
-library(ggplot2)
 library(magrittr)
-library(forcats)
+library(DT)
+
+# create standard datatable function to be used in all tables in this post
+show_datatable <- function(data) {
+  data %>% 
+    DT::datatable(
+      rownames = FALSE,
+      extensions = 'FixedColumns',
+      options = list(
+        pageLength = 50,
+        scrollX = TRUE,
+        scrollCollapse = TRUE,
+        fixedColumns = list(leftColumns = 2),
+        columnDefs = list(
+          list(
+            className = 'dt-center',
+            targets = 0:(ncol(data) - 1)
+          )
+        )
+      )
+    )
+}
 
 ```
 
@@ -102,71 +126,6 @@ weapons <- br_weapons[
   )
 ]
 
-cols_train_times <- 
-  paste0(c("UnitTrainingTime", "UnitIn", "UnitOut"), rep(1:6, each = 3))
-
-train_time <- br_buildings[
-  ,
-  ..cols_train_times
-]
-
-train_time_ct <- data.frame(
-  UnitIndex = as.character(1:6),
-  UnitIDIn = grep("UnitIn", cols_train_times, value = TRUE),
-  UnitIDOut = grep("UnitOut", cols_train_times, value = TRUE),
-  TrainTime = grep("UnitTrainingTime", cols_train_times, value = TRUE)
-)
-
-train_time <- rowrecs_to_blocks(
-  train_time,
-  controlTable = train_time_ct
-)
-
-setDT(train_time)
-
-train_time <- train_time[, UnitIndex := NULL]
-
-train_chain1 <- train_time[
-  ,
-  .(
-    UnitID = UnitIDOut,
-    UnitChain1 = UnitIDIn,
-    TrainTime1 = TrainTime
-  )
-]
-
-train_chain2 <- train_time[
-  ,
-  .(
-    UnitChain1 = UnitIDOut,
-    UnitChain2 = UnitIDIn,
-    TrainTime2 = TrainTime
-  )
-]
-
-train_chain3 <- train_time[
-  ,
-  .(
-    UnitChain2= UnitIDOut,
-    UnitChain3 = UnitIDIn,
-    TrainTime3 = TrainTime
-  )
-]
-
-train_chain12 <- train_chain1[
-  train_chain2,
-  on = "UnitChain1", 
-  nomatch = 0,
-  allow.cartesian = TRUE
-]
-
-train_chain123 <- train_chain12[
-  train_chain3,
-  on = "UnitChain2", 
-  nomatch = 0,
-  allow.cartesian = TRUE
-]
-
 ```
 
 ## Transform Data
@@ -186,40 +145,53 @@ setDT(units)
 
 ## Combine Unit and Weapons Data
 
-```{r merge-units-weapon,eval=FALSE}
+```{r merge-units-weapon}
 
 unit_stats <- units[
   weapons,
   on = c("WeaponID" = "Type"),
   nomatch = 0,
   allow.cartesian = TRUE
-][
-  train_time,
-  on = "UnitID",
-  nomatch = 0,
-  allow.cartesian = TRUE
 ]
 
-```
 
-# Visualize Data
-
-## Melee Damage
-
-```{r stongest-melee, eval=FALSE}
-
-units_weapons[PrefersMelee == 1][order(BaseDamage, decreasing = TRUE)][1:10] %>%
-  ggplot(aes(fct_reorder(Name, -BaseDamage), BaseDamage)) + 
-  geom_col()
 
 ```
 
-## Missile Damage
+# Data Showcase
 
-```{r stongest-missile, eval=FALSE}
+```{r show-unit-stats, fig.cap="Battle Realms Zen Edition Units and Some of Their Useful Stats."}
 
-units_weapons[PrefersMelee == 0][order(BaseDamage, decreasing = TRUE)][1:10] %>%
-  ggplot(aes(fct_reorder(Name, -BaseDamage), BaseDamage)) + 
-  geom_col()
+# Make Damage Class more meaningful
+
+unit_stats[
+  ,
+  DamageClass := fcase(
+    DamageClass == 1, "Cutting"
+  )
+]
+
+# Transform melee and missile damage in separate columns looks better for display
+unit_stats <- pivot_to_rowrecs(
+  unit_stats,
+  columnToTakeKeysFrom = "WeaponType",
+  columnToTakeValuesFrom = "BaseDamage",
+  rowKeyColumns = c("UnitID", "Name")
+)
+
+# Rename weapon damage columns to be clearer
+setnames(
+  unit_stats, 
+  old = c("MeleeWeapon", "MissileWeapon"), 
+  new = paste0(c("MeleeWeapon", "MissileWeapon"), "Damage")
+)
+
+
+
+show_datatable(
+  unit_stats
+)
 
 ```
+
+These data is available in the package as the `br_unit_stats`.

@@ -28,6 +28,35 @@ br_buildings <- fread(
   drop = c(1, 107)
 )
 
+br_team_colors_path <-
+  here("data-raw", "BattleRealmsData", "Data_TeamColors.txt")
+
+br_team_colors <- fread(
+  br_team_colors_path,
+  # Remove first and last columns because these are empty
+  drop = c(1, 6:9)
+)
+
+br_team_colors[
+  ,
+  HexColor := rgb(R, G, B),
+  TeamColor
+]
+
+br_team_colors[
+  ,
+  ColorName := fcase(
+    TeamColor == 0, "Blue",
+    TeamColor == 1, "Green",
+    TeamColor == 2, "Orange",
+    TeamColor == 3, "Purple",
+    TeamColor == 4, "Red",
+    TeamColor == 5, "Pink",
+    TeamColor == 6, "Turquoise",
+    TeamColor == 7, "Yellow"
+  )
+]
+
 br_techniques_path <-
   here("data-raw", "BattleRealmsData", "Data_Techniques.txt")
 
@@ -68,6 +97,7 @@ usethis::use_data(
   br_abilities,
   br_battle_gears,
   br_buildings,
+  br_team_colors,
   br_techniques,
   br_units,
   br_weapons,
