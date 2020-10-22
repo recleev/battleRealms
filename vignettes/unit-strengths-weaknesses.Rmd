@@ -157,9 +157,12 @@ unit_stats <- units[
 
 ```
 
+
+These data is available in the package as the `br_unit_stats`.
+
 # Data Showcase
 
-```{r show-unit-stats, fig.cap="Battle Realms Zen Edition Units and Some of Their Useful Stats."}
+```{r show-unit-stats, fig.cap="Battle Realms Zen Edition (v1.56.2) Units and Some of Their Useful Stats."}
 
 # Make Damage Class more meaningful
 
@@ -225,4 +228,3 @@ show_datatable(
 
 ```
 
-These data is available in the package as the `br_unit_stats`.
