@@ -73,6 +73,7 @@ units <- br_units[
     UnitID = Type,
     Name,
     UnitClass,
+    Clan,
     RiceTrainCost,
     WaterTrainCost,
     YinYangTrainCost,
@@ -154,8 +155,6 @@ unit_stats <- units[
   allow.cartesian = TRUE
 ]
 
-
-
 ```
 
 # Data Showcase
@@ -167,26 +166,58 @@ unit_stats <- units[
 unit_stats[
   ,
   DamageClass := fcase(
-    DamageClass == 1, "Cutting"
+    DamageClass == 0, "Blunt",
+    DamageClass == 1, "Cutting",
+    DamageClass == 2, "Explosive",
+    DamageClass == 3, "Fire",
+    DamageClass == 4, "Magic",
+    DamageClass == 5, "Piercing"
   )
 ]
 
 # Transform melee and missile damage in separate columns looks better for display
-unit_stats <- pivot_to_rowrecs(
-  unit_stats,
-  columnToTakeKeysFrom = "WeaponType",
-  columnToTakeValuesFrom = "BaseDamage",
-  rowKeyColumns = c("UnitID", "Name")
-)
+weapon_damage_ct <- 
+  data.frame(
+    WeaponType = c("MeleeWeapon", "MissileWeapon"),
+    BaseDamage = c("MeleeDamage", "MissileWeapon"),
+    DamageClass = c("MeleeType", "MissileType")
+  )
 
-# Rename weapon damage columns to be clearer
-setnames(
+
+unit_stats <- blocks_to_rowrecs(
   unit_stats, 
-  old = c("MeleeWeapon", "MissileWeapon"), 
-  new = paste0(c("MeleeWeapon", "MissileWeapon"), "Damage")
+  keyColumns = c("UnitID", "Name"), 
+  controlTable = weapon_damage_ct,
+  columnsToCopy = names(unit_stats)[
+    !names(unit_stats) %in% 
+      c("UnitID", "Name", "WeaponType", "BaseDamage", "DamageClass")
+  ]
 )
 
+unit_stats[
+  ,
+  Clan := fcase(
+    Clan == 0, "Dragon",
+    Clan == 1, "Hero",
+    Clan == 2, "Lotus",
+    Clan == 3, "Serpent",
+    Clan == 5, "Wolf"
+  )
+]
 
+unit_stats[
+  ,
+  Name := gsub(
+    paste0(
+      "^",
+      c("Hero", "Dragon", "Lotus", "Serpent", "Wolf"),
+      " ",
+      collapse = "|"
+    ),
+    "",
+    Name
+  )
+]
 
 show_datatable(
   unit_stats
