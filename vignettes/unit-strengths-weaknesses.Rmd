@@ -193,7 +193,7 @@ unit_stats <- blocks_to_rowrecs(
   controlTable = weapon_damage_ct,
   columnsToCopy = names(unit_stats)[
     !names(unit_stats) %in% 
-      c("UnitID", "Name", "WeaponType", "BaseDamage", "DamageClass")
+      c("UnitID", "Name", "WeaponType", "BaseDamage", "DamageClass", "WeaponID")
   ]
 )
 
