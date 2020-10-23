@@ -12,6 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# Introduction
 
 ```{r set-options-attach-packages, include = TRUE, warning=FALSE, message=FALSE}
 
@@ -49,6 +50,74 @@ show_datatable <- function(data) {
       filter = list(position = 'top', clear = FALSE, plain = TRUE)
     )
 }
+
+```
+
+# Data Preparation
+
+```{r build-damage-vs-armor}
+
+unit_damage_armor <- br_unit_stats[
+  ,
+  .(
+    Name,
+    Clan,
+    MaxHealth,
+    DamageClass,
+    WeaponType,
+    BaseDamage,
+    ArmorAgainst,
+    DamageMultiplier
+  )
+]
+
+defender <- copy(unit_damage_armor)
+
+attacker <- copy(unit_damage_armor)
+
+setnames(
+  defender, 
+  old = names(unit_damage_armor), 
+  new = paste0("Defender", names(unit_damage_armor))
+)
+
+setnames(
+  attacker, 
+  old = names(unit_damage_armor), 
+  new = paste0("Attacker", names(unit_damage_armor))
+)
+
+damage_vs_armor <- attacker[
+  defender, 
+  on = c("AttackerDamageClass" = "DefenderArmorAgainst"), 
+  allow.cartesian = TRUE
+]
+
+```
+
+# Simulate Damage To Kills
+
+```{r simulate-one-on-one}
+
+damage_vs_armor[
+  ,
+  `:=`(
+    AttackerToKill =
+      DefenderMaxHealth / (AttackerBaseDamage * DefenderDamageMultiplier),
+    DefenderToKill = 
+      AttackerMaxHealth / 
+      (
+        DefenderBaseDamage * 
+          fifelse(DefenderDamageClass == AttackerArmorAgainst, AttackerDamageMultiplier, 0.01)
+      )
+  )
+]
+
+damage_vs_armor[
+  ,
+  AttackerKills := AttackerToKill < DefenderToKill
+]
+
 
 ```
 
