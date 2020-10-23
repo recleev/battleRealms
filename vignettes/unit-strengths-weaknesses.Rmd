@@ -48,14 +48,15 @@ show_datatable <- function(data) {
         pageLength = 50,
         scrollX = TRUE,
         scrollCollapse = TRUE,
-        fixedColumns = list(leftColumns = 2),
+        fixedColumns = list(leftColumns = 3),
         columnDefs = list(
           list(
             className = 'dt-center',
             targets = 0:(ncol(data) - 1)
           )
         )
-      )
+      ),
+      filter = list(position = 'top', clear = FALSE, plain = TRUE)
     )
 }
 
@@ -72,8 +73,8 @@ units <- br_units[
   .(
     UnitID = Type,
     Name,
-    UnitClass,
     Clan,
+    UnitClass,
     RiceTrainCost,
     WaterTrainCost,
     YinYangTrainCost,
@@ -173,7 +174,7 @@ unit_stats[
     DamageClass == 1, "Cutting",
     DamageClass == 2, "Explosive",
     DamageClass == 3, "Fire",
-    DamageClass == 4, "Magic",
+    DamageClass == 4, "Magical",
     DamageClass == 5, "Piercing"
   )
 ]
