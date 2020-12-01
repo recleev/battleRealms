@@ -51,6 +51,7 @@ weapons <- br_weapons[
     WatchtowerMaxRange,
     Class,
     DamageClass,
+    RiderPercentage,
     OpportunityFire,
     AreaOfEffect,
     Poison,
